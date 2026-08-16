@@ -229,5 +229,5 @@ BMI = weight(kg) / (height(m) × height(m))
 
 - **Company:** IV Innovations Private Limited (Kundli – Sonipat)
 - **Deadline:** 20 August 2026
-- **Developer:** [Your Name]
+- **Developer:** Ayush Kumar
 - **Platform:** Android + iOS (React Native / Expo)
