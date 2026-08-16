@@ -77,10 +77,10 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoContainer}>
-            <Ionicons name="fitness" size={40} color={Colors.primary} />
+            <Ionicons name="heart-pulse" size={42} color={Colors.primary} />
           </View>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Track your BMI, own your health</Text>
+          <Text style={styles.title}>VitalFit BMI</Text>
+          <Text style={styles.subtitle}>Health monitoring &amp; weight intelligence</Text>
         </View>
 
         {/* Form */}

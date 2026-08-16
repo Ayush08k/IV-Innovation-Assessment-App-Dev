@@ -1,47 +1,48 @@
 // S (SRP): Only responsible for color design tokens
 
 export const Colors = {
-  // Backgrounds
-  background: '#0A0F1E',
-  surface: '#111827',
-  surfaceElevated: '#1C2333',
-  surfaceBorder: '#1F2A3C',
+  // Backgrounds - deep clean obsidian slate with fresh health tint
+  background: '#071013',
+  surface: '#0E1A1E',
+  surfaceElevated: '#15252A',
+  surfaceBorder: '#1F353C',
 
-  // Brand
-  primary: '#6C63FF',
-  primaryLight: '#8B85FF',
-  primaryDark: '#4A42D8',
-  accent: '#00D4AA',
-  accentLight: '#33DDBB',
+  // Health Brand - Emerald Vitality & Mint Glow
+  primary: '#10B981',        // Vital Health Emerald
+  primaryLight: '#34D399',   // Vibrant Mint
+  primaryDark: '#059669',    // Deep Forest Health
+  accent: '#06B6D4',         // Cyan Pulse
+  accentLight: '#22D3EE',    // Sky Glow
+  accentDark: '#0891B2',
 
   // BMI Category colours
-  underweight: '#3B82F6',
-  normal: '#10B981',
-  overweight: '#F59E0B',
-  obese: '#EF4444',
+  underweight: '#38BDF8',    // Crisp Sky Blue
+  normal: '#10B981',         // Healthy Emerald Green
+  overweight: '#FBBF24',     // Warm Amber Warning
+  obese: '#F43F5E',          // Rose Coral Alert
 
   // Text
-  textPrimary: '#F9FAFB',
-  textSecondary: '#9CA3AF',
-  textMuted: '#6B7280',
-  textInverse: '#0A0F1E',
+  textPrimary: '#F0FDFA',
+  textSecondary: '#99F6E4',
+  textMuted: '#64748B',
+  textInverse: '#071013',
 
-  // UI
+  // UI status
   success: '#10B981',
-  warning: '#F59E0B',
-  error: '#EF4444',
-  info: '#3B82F6',
+  warning: '#FBBF24',
+  error: '#F43F5E',
+  info: '#06B6D4',
 
   // Input
-  inputBackground: '#1C2333',
-  inputBorder: '#2D3748',
-  inputBorderFocused: '#6C63FF',
-  inputPlaceholder: '#6B7280',
+  inputBackground: '#112227',
+  inputBorder: '#1D3B43',
+  inputBorderFocused: '#10B981',
+  inputPlaceholder: '#64748B',
 
   // Gradients (start, end)
-  gradientPrimary: ['#6C63FF', '#4A42D8'] as const,
-  gradientAccent: ['#00D4AA', '#0099CC'] as const,
-  gradientCard: ['#1C2333', '#111827'] as const,
+  gradientPrimary: ['#10B981', '#059669'] as const,
+  gradientAccent: ['#06B6D4', '#10B981'] as const,
+  gradientCard: ['#15252A', '#0E1A1E'] as const,
 
   // White / Black
   white: '#FFFFFF',

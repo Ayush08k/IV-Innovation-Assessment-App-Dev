@@ -22,10 +22,10 @@ const Tab = createBottomTabNavigator<AppTabParamList>();
 type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 
 const TAB_ICONS: Record<keyof AppTabParamList, { active: IoniconsName; inactive: IoniconsName }> = {
-  Home: { active: 'fitness', inactive: 'fitness-outline' },
-  History: { active: 'stats-chart', inactive: 'stats-chart-outline' },
+  Home: { active: 'heart-circle', inactive: 'heart-circle-outline' },
+  History: { active: 'pulse', inactive: 'pulse-outline' },
   Profiles: { active: 'people', inactive: 'people-outline' },
-  Settings: { active: 'settings', inactive: 'settings-outline' },
+  Settings: { active: 'options', inactive: 'options-outline' },
 };
 
 export const AppNavigator: React.FC = () => (
