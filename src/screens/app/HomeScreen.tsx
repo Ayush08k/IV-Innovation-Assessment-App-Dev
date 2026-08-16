@@ -1,9 +1,10 @@
 // S (SRP): Composes HomeScreen UI — delegates data to useHome hook.
 // I (ISP): Only consumes { currentEntry, submitDetails, isLoading, isSubmitting } from hook.
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity,
+  BackHandler, ToastAndroid, Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useHome } from '../../hooks/useHome';
@@ -11,6 +12,7 @@ import { useProfileStore } from '../../store/profileStore';
 import { BMIGauge } from '../../components/BMIGauge';
 import { CategoryBadge } from '../../components/CategoryBadge';
 import { UserDetailsForm } from '../../components/UserDetailsForm';
+import { LiquidTransitionView } from '../../components/LiquidTransitionView';
 import { getHealthyWeightRange, kgToLbs } from '../../utils/bmi';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius, Shadow } from '../../theme';
 import type { UserDetailsFormData } from '../../utils/validation';
@@ -19,6 +21,26 @@ export const HomeScreen: React.FC = () => {
   const activeProfile = useProfileStore((s) => s.activeProfile);
   const { currentEntry, isLoading, isSubmitting, error, submitDetails, refresh } = useHome();
   const [showForm, setShowForm] = useState(!currentEntry);
+  const lastBackPressTime = useRef<number>(0);
+
+  // Hardware back press on Home screen: double-tap to exit app
+  useEffect(() => {
+    const onBackPress = () => {
+      const now = Date.now();
+      if (lastBackPressTime.current && now - lastBackPressTime.current < 2000) {
+        BackHandler.exitApp();
+        return true;
+      }
+      lastBackPressTime.current = now;
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => backHandler.remove();
+  }, []);
 
   const handleSubmit = async (data: UserDetailsFormData) => {
     const success = await submitDetails(data);
@@ -36,7 +58,11 @@ export const HomeScreen: React.FC = () => {
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={Colors.primary} />}
       showsVerticalScrollIndicator={false}
+      overScrollMode="always"
+      bounces={true}
+      decelerationRate="normal"
     >
+      <LiquidTransitionView>
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -133,6 +159,7 @@ export const HomeScreen: React.FC = () => {
           )}
         </View>
       )}
+      </LiquidTransitionView>
     </ScrollView>
   );
 };

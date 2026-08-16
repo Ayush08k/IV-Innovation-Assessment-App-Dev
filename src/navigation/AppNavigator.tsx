@@ -30,12 +30,15 @@ const TAB_ICONS: Record<keyof AppTabParamList, { active: IoniconsName; inactive:
 
 export const AppNavigator: React.FC = () => (
   <Tab.Navigator
+    backBehavior="history"
     screenOptions={({ route }) => ({
       // Header
       headerStyle: { backgroundColor: Colors.surface },
       headerTintColor: Colors.textPrimary,
       headerTitleStyle: { fontFamily: FontFamily.bold, fontSize: FontSize.md },
       headerShadowVisible: false,
+      // Animation & Transition
+      animation: 'fade',
       // Tab bar
       tabBarStyle: {
         backgroundColor: Colors.surface,

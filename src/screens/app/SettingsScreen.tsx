@@ -10,6 +10,7 @@ import { useSettings } from '../../hooks/useSettings';
 import { useProfileStore } from '../../store/profileStore';
 import { useAuthStore } from '../../store/authStore';
 import { UserDetailsForm } from '../../components/UserDetailsForm';
+import { LiquidTransitionView } from '../../components/LiquidTransitionView';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius, Shadow } from '../../theme';
 import type { UserDetailsFormData } from '../../utils/validation';
 
@@ -42,9 +43,13 @@ export const SettingsScreen: React.FC = () => {
       style={styles.screen}
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
+      overScrollMode="always"
+      bounces={true}
+      decelerationRate="normal"
     >
-      {/* Header */}
-      <Text style={styles.title}>Settings</Text>
+      <LiquidTransitionView>
+        {/* Header */}
+        <Text style={styles.title}>Settings</Text>
 
       {/* Account Card */}
       <View style={styles.card}>
@@ -108,24 +113,24 @@ export const SettingsScreen: React.FC = () => {
         </View>
       </View>
 
-      {/* Sign Out */}
-      <TouchableOpacity
-        style={[styles.signOutBtn, isSigningOut && styles.btnDisabled]}
-        onPress={confirmSignOut}
-        disabled={isSigningOut}
-        accessibilityLabel="Sign out"
-        accessibilityRole="button"
-      >
-        {isSigningOut
-          ? <ActivityIndicator color={Colors.error} size="small" />
-          : (
+        {/* Sign Out */}
+        <TouchableOpacity
+          style={[styles.signOutBtn, isSigningOut && styles.btnDisabled]}
+          onPress={confirmSignOut}
+          disabled={isSigningOut}
+          accessibilityLabel="Sign out"
+          accessibilityRole="button"
+        >
+          {isSigningOut ? (
+            <ActivityIndicator color={Colors.error} size="small" />
+          ) : (
             <>
               <Ionicons name="log-out-outline" size={20} color={Colors.error} />
               <Text style={styles.signOutText}>Sign Out</Text>
             </>
-          )
-        }
-      </TouchableOpacity>
+          )}
+        </TouchableOpacity>
+      </LiquidTransitionView>
     </ScrollView>
   );
 };

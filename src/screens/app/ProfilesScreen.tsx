@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useProfiles } from '../../hooks/useProfiles';
 import { ProfileCard } from '../../components/ProfileCard';
 import { addProfileSchema, type AddProfileFormData } from '../../utils/validation';
+import { LiquidTransitionView } from '../../components/LiquidTransitionView';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius, Shadow } from '../../theme';
 import type { Gender } from '../../types';
 
@@ -45,60 +46,65 @@ export const ProfilesScreen: React.FC = () => {
         contentContainerStyle={styles.container}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={Colors.primary} />}
         showsVerticalScrollIndicator={false}
+        overScrollMode="always"
+        bounces={true}
+        decelerationRate="normal"
       >
-        {/* Header */}
-        <View style={styles.headerRow}>
-          <View>
-            <Text style={styles.title}>Profiles</Text>
-            <Text style={styles.subtitle}>{profiles.length} profile{profiles.length !== 1 ? 's' : ''}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.addBtn}
-            onPress={() => setShowModal(true)}
-            accessibilityLabel="Add new profile"
-            accessibilityRole="button"
-          >
-            <Ionicons name="add" size={22} color={Colors.white} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Info banner */}
-        <View style={styles.infoBanner}>
-          <Ionicons name="information-circle-outline" size={16} color={Colors.info} />
-          <Text style={styles.infoText}>
-            Tap a profile to switch to it. The active profile is used for all BMI calculations.
-          </Text>
-        </View>
-
-        {/* Error */}
-        {error && (
-          <View style={styles.errorBanner}>
-            <Ionicons name="warning-outline" size={16} color={Colors.error} />
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        )}
-
-        {/* Profile List */}
-        {profiles.length === 0 && !isLoading ? (
-          <View style={styles.emptyState}>
-            <Ionicons name="people-outline" size={56} color={Colors.textMuted} />
-            <Text style={styles.emptyTitle}>No Profiles Yet</Text>
-            <Text style={styles.emptySubtitle}>Create your first profile to start tracking.</Text>
-            <TouchableOpacity style={styles.emptyBtn} onPress={() => setShowModal(true)}>
-              <Text style={styles.emptyBtnText}>Add Profile</Text>
+        <LiquidTransitionView>
+          {/* Header */}
+          <View style={styles.headerRow}>
+            <View>
+              <Text style={styles.title}>Profiles</Text>
+              <Text style={styles.subtitle}>{profiles.length} profile{profiles.length !== 1 ? 's' : ''}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.addBtn}
+              onPress={() => setShowModal(true)}
+              accessibilityLabel="Add new profile"
+              accessibilityRole="button"
+            >
+              <Ionicons name="add" size={22} color={Colors.white} />
             </TouchableOpacity>
           </View>
-        ) : (
-          profiles.map((profile) => (
-            <ProfileCard
-              key={profile.id}
-              profile={profile}
-              isActive={activeProfile?.id === profile.id}
-              onSelect={() => switchProfile(profile)}
-              onDelete={() => removeProfile(profile.id)}
-            />
-          ))
-        )}
+
+          {/* Info banner */}
+          <View style={styles.infoBanner}>
+            <Ionicons name="information-circle-outline" size={16} color={Colors.info} />
+            <Text style={styles.infoText}>
+              Tap a profile to switch to it. The active profile is used for all BMI calculations.
+            </Text>
+          </View>
+
+          {/* Error */}
+          {error && (
+            <View style={styles.errorBanner}>
+              <Ionicons name="warning-outline" size={16} color={Colors.error} />
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          )}
+
+          {/* Profile List */}
+          {profiles.length === 0 && !isLoading ? (
+            <View style={styles.emptyState}>
+              <Ionicons name="people-outline" size={56} color={Colors.textMuted} />
+              <Text style={styles.emptyTitle}>No Profiles Yet</Text>
+              <Text style={styles.emptySubtitle}>Create your first profile to start tracking.</Text>
+              <TouchableOpacity style={styles.emptyBtn} onPress={() => setShowModal(true)}>
+                <Text style={styles.emptyBtnText}>Add Profile</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            profiles.map((profile) => (
+              <ProfileCard
+                key={profile.id}
+                profile={profile}
+                isActive={activeProfile?.id === profile.id}
+                onSelect={() => switchProfile(profile)}
+                onDelete={() => removeProfile(profile.id)}
+              />
+            ))
+          )}
+        </LiquidTransitionView>
       </ScrollView>
 
       {/* Add Profile Modal */}

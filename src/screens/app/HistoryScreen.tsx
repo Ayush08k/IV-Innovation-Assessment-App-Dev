@@ -11,6 +11,7 @@ import { useHistory } from '../../hooks/useHistory';
 import { useProfileStore } from '../../store/profileStore';
 import { WeightChart } from '../../components/WeightChart';
 import { getBMICategory } from '../../utils/bmi';
+import { LiquidTransitionView } from '../../components/LiquidTransitionView';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius, Shadow } from '../../theme';
 
 export const HistoryScreen: React.FC = () => {
@@ -23,62 +24,67 @@ export const HistoryScreen: React.FC = () => {
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={Colors.primary} />}
       showsVerticalScrollIndicator={false}
+      overScrollMode="always"
+      bounces={true}
+      decelerationRate="normal"
     >
-      {/* Header */}
-      <Text style={styles.title}>Weight History</Text>
-      <Text style={styles.subtitle}>{activeProfile?.name ?? 'Profile'} · Last 7 entries</Text>
+      <LiquidTransitionView>
+        {/* Header */}
+        <Text style={styles.title}>Weight History</Text>
+        <Text style={styles.subtitle}>{activeProfile?.name ?? 'Profile'} · Last 7 entries</Text>
 
-      {/* Error */}
-      {error && (
-        <View style={styles.errorBanner}>
-          <Ionicons name="warning-outline" size={16} color={Colors.error} />
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      )}
-
-      {/* Chart */}
-      <View style={styles.chartCard}>
-        <View style={styles.chartHeader}>
-          <Ionicons name="trending-up-outline" size={18} color={Colors.primary} />
-          <Text style={styles.chartTitle}>Weight Trend (kg)</Text>
-        </View>
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator color={Colors.primary} />
+        {/* Error */}
+        {error && (
+          <View style={styles.errorBanner}>
+            <Ionicons name="warning-outline" size={16} color={Colors.error} />
+            <Text style={styles.errorText}>{error}</Text>
           </View>
-        ) : (
-          <WeightChart data={chartData} weightUnit="kg" />
         )}
-      </View>
 
-      {/* Entry List */}
-      {entries.length > 0 && (
-        <View style={styles.listSection}>
-          <Text style={styles.listTitle}>Entries</Text>
-          {[...entries].reverse().map((entry) => {
-            const cat = getBMICategory(entry.bmi);
-            return (
-              <View key={entry.id} style={styles.entryCard}>
-                <View style={styles.entryLeft}>
-                  <Text style={styles.entryDate}>
-                    {format(new Date(entry.recorded_at), 'dd MMM yyyy, hh:mm a')}
-                  </Text>
-                  <View style={styles.entryStats}>
-                    <Text style={styles.entryStat}>{entry.weight_kg.toFixed(1)} kg</Text>
-                    <Text style={styles.entryStatSep}>·</Text>
-                    <Text style={styles.entryStat}>{entry.height_cm.toFixed(0)} cm</Text>
+        {/* Chart */}
+        <View style={styles.chartCard}>
+          <View style={styles.chartHeader}>
+            <Ionicons name="trending-up-outline" size={18} color={Colors.primary} />
+            <Text style={styles.chartTitle}>Weight Trend (kg)</Text>
+          </View>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator color={Colors.primary} />
+            </View>
+          ) : (
+            <WeightChart data={chartData} weightUnit="kg" />
+          )}
+        </View>
+
+        {/* Entry List */}
+        {entries.length > 0 && (
+          <View style={styles.listSection}>
+            <Text style={styles.listTitle}>Entries</Text>
+            {[...entries].reverse().map((entry) => {
+              const cat = getBMICategory(entry.bmi);
+              return (
+                <View key={entry.id} style={styles.entryCard}>
+                  <View style={styles.entryLeft}>
+                    <Text style={styles.entryDate}>
+                      {format(new Date(entry.recorded_at), 'dd MMM yyyy, hh:mm a')}
+                    </Text>
+                    <View style={styles.entryStats}>
+                      <Text style={styles.entryStat}>{entry.weight_kg.toFixed(1)} kg</Text>
+                      <Text style={styles.entryStatSep}>·</Text>
+                      <Text style={styles.entryStat}>{entry.height_cm.toFixed(0)} cm</Text>
+                    </View>
+                  </View>
+                  <View style={[styles.bmiChip, { backgroundColor: cat.color + '22', borderColor: cat.color + '55' }]}>
+                    <Text style={[styles.bmiChipText, { color: cat.color }]}>
+                      {entry.bmi.toFixed(1)}
+                    </Text>
                   </View>
                 </View>
-                <View style={[styles.bmiChip, { backgroundColor: cat.color + '22', borderColor: cat.color + '55' }]}>
-                  <Text style={[styles.bmiChipText, { color: cat.color }]}>
-                    {entry.bmi.toFixed(1)}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      )}
+              );
+            })}
+          </View>
+        )}
+      </LiquidTransitionView>
     </ScrollView>
   );
 };
