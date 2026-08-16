@@ -1,48 +1,48 @@
 // S (SRP): Only responsible for color design tokens
 
 export const Colors = {
-  // Backgrounds - deep clean obsidian slate with fresh health tint
-  background: '#071013',
-  surface: '#0E1A1E',
-  surfaceElevated: '#15252A',
-  surfaceBorder: '#1F353C',
+  // Backgrounds - Clean fresh clinical light theme
+  background: '#F4FBF7',      // Soft Fresh Mint Off-White
+  surface: '#FFFFFF',         // Pure Crisp White
+  surfaceElevated: '#FFFFFF', // Elevated Pure White Card
+  surfaceBorder: '#E2EFE9',   // Gentle Sage Border
 
-  // Health Brand - Emerald Vitality & Mint Glow
-  primary: '#10B981',        // Vital Health Emerald
-  primaryLight: '#34D399',   // Vibrant Mint
-  primaryDark: '#059669',    // Deep Forest Health
-  accent: '#06B6D4',         // Cyan Pulse
-  accentLight: '#22D3EE',    // Sky Glow
-  accentDark: '#0891B2',
+  // Health Brand - Vibrant Medical Emerald & Mint
+  primary: '#059669',        // Deep Trustworthy Medical Emerald
+  primaryLight: '#10B981',   // Vibrant Mint
+  primaryDark: '#047857',    // Forest Health
+  accent: '#0891B2',         // Clinical Cyan
+  accentLight: '#06B6D4',
+  accentDark: '#0E7490',
 
   // BMI Category colours
-  underweight: '#38BDF8',    // Crisp Sky Blue
-  normal: '#10B981',         // Healthy Emerald Green
-  overweight: '#FBBF24',     // Warm Amber Warning
-  obese: '#F43F5E',          // Rose Coral Alert
+  underweight: '#0284C7',    // Sky Blue
+  normal: '#059669',         // Health Green
+  overweight: '#D97706',     // Amber Warm
+  obese: '#E11D48',          // Rose Alert
 
   // Text
-  textPrimary: '#F0FDFA',
-  textSecondary: '#99F6E4',
-  textMuted: '#64748B',
-  textInverse: '#071013',
+  textPrimary: '#0F2922',    // Deep Forest Charcoal
+  textSecondary: '#4A6B62',  // Crisp Sage Gray
+  textMuted: '#8BA39B',      // Soft Muted Slate
+  textInverse: '#FFFFFF',
 
   // UI status
-  success: '#10B981',
-  warning: '#FBBF24',
-  error: '#F43F5E',
-  info: '#06B6D4',
+  success: '#059669',
+  warning: '#D97706',
+  error: '#E11D48',
+  info: '#0284C7',
 
   // Input
-  inputBackground: '#112227',
-  inputBorder: '#1D3B43',
-  inputBorderFocused: '#10B981',
-  inputPlaceholder: '#64748B',
+  inputBackground: '#F0F9F5',
+  inputBorder: '#D1E7DD',
+  inputBorderFocused: '#059669',
+  inputPlaceholder: '#8BA39B',
 
   // Gradients (start, end)
-  gradientPrimary: ['#10B981', '#059669'] as const,
-  gradientAccent: ['#06B6D4', '#10B981'] as const,
-  gradientCard: ['#15252A', '#0E1A1E'] as const,
+  gradientPrimary: ['#059669', '#10B981'] as const,
+  gradientAccent: ['#0891B2', '#059669'] as const,
+  gradientCard: ['#FFFFFF', '#F4FBF7'] as const,
 
   // White / Black
   white: '#FFFFFF',
