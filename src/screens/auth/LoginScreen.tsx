@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Note: GoogleSignin is dynamically loaded inside onGoogleSignIn to prevent TurboModuleRegistry crash in Expo Go
 import { loginSchema, type LoginFormData } from '../../utils/validation';
-import { signInWithEmail, signInWithGoogle } from '../../services/authService';
+import { signInWithEmail, signInWithGoogleOAuth } from '../../services/authService';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius } from '../../theme';
 import type { AuthStackParamList } from '../../navigation/AuthNavigator';
 
@@ -35,29 +35,12 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const onGoogleSignIn = async () => {
     try {
       setIsGoogleLoading(true);
-      // Dynamically require GoogleSignin so it doesn't crash during Expo Go app evaluation
-      const { GoogleSignin } = require('@react-native-google-signin/google-signin');
-      if (!GoogleSignin || typeof GoogleSignin.hasPlayServices !== 'function') {
-        Alert.alert(
-          'Expo Go Note',
-          'Native Google Sign-In requires a standalone build (`npx expo run:android`). Please use email/password in Expo Go!'
-        );
-        return;
+      const result = await signInWithGoogleOAuth();
+      if (!result.success && result.error !== 'Sign in was cancelled') {
+        Alert.alert('Google Sign-In', result.error);
       }
-      await GoogleSignin.hasPlayServices();
-      const { data } = await GoogleSignin.signIn();
-      if (!data?.idToken) throw new Error('No ID token received');
-      const result = await signInWithGoogle(data.idToken);
-      if (!result.success) Alert.alert('Google Sign-In Failed', result.error);
     } catch (err: any) {
-      if (err.code !== 'SIGN_IN_CANCELLED') {
-        Alert.alert(
-          'Google Sign-In',
-          err.message?.includes('RNGoogleSignin') || err.message?.includes('TurboModuleRegistry')
-            ? 'Native Google Sign-In requires a development build (`npx expo run:android`). Please use Email/Password in Expo Go!'
-            : (err.message ?? 'Google sign-in failed')
-        );
-      }
+      Alert.alert('Google Sign-In', err.message ?? 'An error occurred during Google sign-in');
     } finally {
       setIsGoogleLoading(false);
     }

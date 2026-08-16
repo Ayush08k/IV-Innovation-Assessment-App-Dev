@@ -35,7 +35,53 @@ export const signUpWithEmail = async (
   }
 };
 
-// ─── Sign In with Google ──────────────────────────────────────────────────────
+// ─── Sign In with Google (Universal: Expo Go + WebBrowser / Native) ───────────
+
+export const signInWithGoogleOAuth = async (): Promise<ServiceResult<null>> => {
+  try {
+    const WebBrowser = require('expo-web-browser');
+    const AuthSession = require('expo-auth-session');
+    
+    WebBrowser.maybeCompleteAuthSession();
+    const redirectUrl = AuthSession.makeRedirectUri({
+      preferLocalhost: true,
+    });
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: redirectUrl,
+        skipBrowserRedirect: true,
+      },
+    });
+
+    if (error) return { success: false, error: error.message };
+    if (!data?.url) return { success: false, error: 'No OAuth URL returned from Supabase' };
+
+    const res = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
+
+    if (res.type === 'success' && res.url) {
+      // Parse parameters from the redirect URL
+      const parsedUrl = new URL(res.url.replace('#', '?'));
+      const accessToken = parsedUrl.searchParams.get('access_token');
+      const refreshToken = parsedUrl.searchParams.get('refresh_token');
+
+      if (accessToken && refreshToken) {
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        if (sessionError) return { success: false, error: sessionError.message };
+      }
+      return { success: true, data: null };
+    } else if (res.type === 'cancel' || res.type === 'dismiss') {
+      return { success: false, error: 'Sign in was cancelled' };
+    }
+    return { success: true, data: null };
+  } catch (err: any) {
+    return { success: false, error: err.message ?? 'Google OAuth sign-in failed' };
+  }
+};
 
 export const signInWithGoogle = async (
   idToken: string
