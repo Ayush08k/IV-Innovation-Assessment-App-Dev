@@ -77,7 +77,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoContainer}>
-            <Ionicons name="heart-pulse" size={42} color={Colors.primary} />
+            <Ionicons name="pulse" size={42} color={Colors.primary} />
           </View>
           <Text style={styles.title}>VitalFit BMI</Text>
           <Text style={styles.subtitle}>Health monitoring &amp; weight intelligence</Text>
