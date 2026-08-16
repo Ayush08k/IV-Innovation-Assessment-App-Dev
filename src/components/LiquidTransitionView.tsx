@@ -9,37 +9,46 @@ type Props = {
 
 export const LiquidTransitionView: React.FC<Props> = ({ children, style, delay = 0 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateYAnim = useRef(new Animated.Value(18)).current;
-  const scaleAnim = useRef(new Animated.Value(0.97)).current;
+  const translateXAnim = useRef(new Animated.Value(24)).current;
+  const translateYAnim = useRef(new Animated.Value(12)).current;
+  const scaleAnim = useRef(new Animated.Value(0.95)).current;
 
   useEffect(() => {
     fadeAnim.setValue(0);
-    translateYAnim.setValue(18);
-    scaleAnim.setValue(0.97);
+    translateXAnim.setValue(24);
+    translateYAnim.setValue(12);
+    scaleAnim.setValue(0.95);
 
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 400,
+        duration: 320,
+        delay,
+        useNativeDriver: true,
+      }),
+      Animated.spring(translateXAnim, {
+        toValue: 0,
+        friction: 6,
+        tension: 80,
         delay,
         useNativeDriver: true,
       }),
       Animated.spring(translateYAnim, {
         toValue: 0,
-        friction: 7,
-        tension: 50,
+        friction: 6,
+        tension: 80,
         delay,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 8,
-        tension: 60,
+        friction: 6,
+        tension: 85,
         delay,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [fadeAnim, translateYAnim, scaleAnim, delay]);
+  }, [fadeAnim, translateXAnim, translateYAnim, scaleAnim, delay]);
 
   return (
     <Animated.View
@@ -47,7 +56,11 @@ export const LiquidTransitionView: React.FC<Props> = ({ children, style, delay =
         style,
         {
           opacity: fadeAnim,
-          transform: [{ translateY: translateYAnim }, { scale: scaleAnim }],
+          transform: [
+            { translateX: translateXAnim },
+            { translateY: translateYAnim },
+            { scale: scaleAnim },
+          ],
         },
       ]}
     >
