@@ -15,7 +15,7 @@
 
 ## 📲 App Download Link
 
-- **Download Standalone Android APK:** [Download VitalFit APK (Direct Link)](https://expo.dev/artifacts/eas/564c0a93-c919-4931-93e3-0c940485d854) *(or scan via EAS QR code)*
+- **Download Standalone Android APK:** [Download VitalFit APK (Direct Link)]([https://expo.dev/artifacts/eas/564c0a93-c919-4931-93e3-0c940485d854](https://drive.google.com/file/d/1BE2CFT6kGTrUyKjuVZ8y5Igk-G2Mz51R/view?usp=sharing)) *(or scan via EAS QR code)*
 
 ---
 
