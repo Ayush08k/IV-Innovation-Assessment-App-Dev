@@ -10,7 +10,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+// Note: GoogleSignin is dynamically loaded inside onGoogleSignIn to prevent TurboModuleRegistry crash in Expo Go
 import { loginSchema, type LoginFormData } from '../../utils/validation';
 import { signInWithEmail, signInWithGoogle } from '../../services/authService';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius } from '../../theme';
@@ -34,14 +34,16 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   const onGoogleSignIn = async () => {
     try {
+      setIsGoogleLoading(true);
+      // Dynamically require GoogleSignin so it doesn't crash during Expo Go app evaluation
+      const { GoogleSignin } = require('@react-native-google-signin/google-signin');
       if (!GoogleSignin || typeof GoogleSignin.hasPlayServices !== 'function') {
         Alert.alert(
           'Expo Go Note',
-          'Native Google Sign-In requires a development build (`npx expo run:android`). Please use email/password sign-in while testing in Expo Go!'
+          'Native Google Sign-In requires a standalone build (`npx expo run:android`). Please use email/password in Expo Go!'
         );
         return;
       }
-      setIsGoogleLoading(true);
       await GoogleSignin.hasPlayServices();
       const { data } = await GoogleSignin.signIn();
       if (!data?.idToken) throw new Error('No ID token received');
@@ -51,8 +53,8 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
       if (err.code !== 'SIGN_IN_CANCELLED') {
         Alert.alert(
           'Google Sign-In',
-          err.message?.includes('native module') || err.message?.includes('RNGoogleSignin')
-            ? 'Native Google Sign-In requires a development build. Please use Email/Password in Expo Go.'
+          err.message?.includes('RNGoogleSignin') || err.message?.includes('TurboModuleRegistry')
+            ? 'Native Google Sign-In requires a development build (`npx expo run:android`). Please use Email/Password in Expo Go!'
             : (err.message ?? 'Google sign-in failed')
         );
       }

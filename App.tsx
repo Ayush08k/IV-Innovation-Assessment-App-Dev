@@ -12,20 +12,8 @@ import {
   Inter_800ExtraBold,
 } from '@expo-google-fonts/inter';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { Colors } from './src/theme';
-
-// Configure Google Sign-In safely (native module is not present in standard Expo Go)
-try {
-  if (GoogleSignin && typeof GoogleSignin.configure === 'function') {
-    GoogleSignin.configure({
-      webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
-    });
-  }
-} catch (e) {
-  console.log('[GoogleSignin] Native module not available in Expo Go:', e);
-}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
