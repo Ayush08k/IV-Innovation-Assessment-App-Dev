@@ -1,26 +1,53 @@
-# BMI Tracker — IV Innovations Private Limited
+# VitalFit — BMI Tracker & Health Analytics 🩺
 
-> A cross-platform BMI tracking app built with React Native (Expo), TypeScript, and Supabase.
+> **VitalFit** is a modern, cross-platform health and body mass index tracking application built with **React Native (Expo SDK 54)**, **TypeScript**, and **Supabase**. It provides real-time health intelligence, animated WHO-standard BMI gauges, multi-profile tracking, 7-day weight telemetry graphs, and secure authentication (Google OAuth & Email/Password).
 
 ---
 
-## Features
+## 👨‍💻 Developer Information
 
-| # | Feature | Status |
-|---|---|---|
-| 1 | Google Sign-In | ✅ Mandatory |
-| 2 | Email/Password + Password Reset | ✅ Mandatory |
-| 3 | User Details Form (weight, height, gender + validation) | ✅ Mandatory |
-| 4 | BMI Calculation + Category Display | ✅ Mandatory |
-| 5 | User Settings (update measurements) | ✅ Bonus |
-| 6 | Weight History Graph (last 7 entries) | ✅ Bonus |
-| 7 | Multi-User Profile Management | ✅ Bonus |
+- **Developer:** **Ayush Kumar**
+- **Company / Assignment:** IV Innovations Private Limited (Kundli – Sonipat)
+- **Role:** Mobile App Developer Assessment
+- **GitHub Repository:** [IV-Innovation-Assessment-App-Dev](https://github.com/Ayush08k/IV-Innovation-Assessment-App-Dev)
 
-### Bonus Items Implemented
-- ✅ Auth state persistence (session survives app restart)
-- ✅ Customized animated chart with gradient fill and tooltips
-- ✅ Comprehensive error handling via `ServiceResult<T>` pattern
-- ✅ SOLID Principles throughout the entire codebase
+---
+
+## 📲 App Download Link
+
+- **Download Standalone Android APK:** [Download VitalFit APK (Direct Link)](https://expo.dev/artifacts/eas/564c0a93-c919-4931-93e3-0c940485d854) *(or scan via EAS QR code)*
+
+---
+
+## 📱 App Description & Overview
+
+VitalFit is engineered following strict **SOLID principles** and modern clinical UI/UX design:
+1. **Real-time BMI & WHO Classification**: Dynamically calculates BMI from Metric (kg/cm) or Imperial (lbs/inches) inputs with an interactive animated gauge and WHO categories (Underweight, Normal, Overweight, Obese).
+2. **Telemetry & Progress History**: Interactive 7-day weight trend graph powered by `react-native-gifted-charts` with tooltip inspection and healthy weight range predictions.
+3. **Multi-User Profile Management**: Switch effortlessly between family or patient profiles; all calculations, history graphs, and measurements adapt instantly.
+4. **Fluid Liquid Flow UX**: Features physics-based spring diagonal transitions across navigation sections and smart Android hardware back button double-tap-to-exit prevention.
+5. **Secure Cloud Sync & RLS**: Backed by PostgreSQL on Supabase with strict Row Level Security (RLS), persistent sessions, and universal Google OAuth.
+
+---
+
+## 🎯 Features Checklist
+
+| # | Feature | Status | Description |
+|---|---|---|---|
+| 1 | Google Sign-In | ✅ Complete | Universal OAuth (in-app browser + native compatibility) |
+| 2 | Email/Password Auth | ✅ Complete | Secure signup, login, and self-service password reset |
+| 3 | Measurement Input Form | ✅ Complete | Weight (kg/lbs) & Height (cm/in) with real-time validation |
+| 4 | BMI Gauge & Classification | ✅ Complete | WHO standard categories + healthy ideal weight range |
+| 5 | Measurement Settings | ✅ Complete | Dynamic updates instantly recalculate BMI & timestamp entries |
+| 6 | Weight History Graph | ✅ Complete | 7-entry weight telemetry with tooltips and trend line |
+| 7 | Multi-Profile Management | ✅ Complete | Create, switch active profile, and manage profiles |
+
+### ✨ Premium Bonus Highlights Implemented
+- ✅ **Auth State Persistence**: Session persists seamlessly across app restarts via `AsyncStorage`.
+- ✅ **Clinical Light Health Theme**: Curated medical emerald (`#059669`) and crisp mint background palette.
+- ✅ **Liquid Spring Animations**: Custom `LiquidTransitionView` with 60fps spring transitions.
+- ✅ **Smart Mobile Back Navigation**: Step-by-step navigation history + double-tap confirmation to exit.
+- ✅ **Strict SOLID Architecture**: Service repository pattern (`ServiceResult<T>`), custom UI hooks, and decoupled Zustand stores.
 
 ---
 
@@ -226,8 +253,8 @@ BMI = weight(kg) / (height(m) × height(m))
 ---
 
 ## Submission Info
-
+ 
 - **Company:** IV Innovations Private Limited (Kundli – Sonipat)
 - **Deadline:** 20 August 2026
 - **Developer:** Ayush Kumar
-- **Platform:** Android + iOS (React Native / Expo)
+- **Platform:** Android + iOS (React Native / Expo SDK 54)
