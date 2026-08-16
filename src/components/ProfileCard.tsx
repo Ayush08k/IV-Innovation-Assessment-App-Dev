@@ -55,20 +55,33 @@ export const ProfileCard: React.FC<Props> = ({
       accessibilityRole="button"
     >
       {/* Avatar */}
-      <View style={[styles.avatar, { backgroundColor: avatarColor + '22', borderColor: avatarColor + '55' }]}>
-        <Ionicons name={genderIcon} size={24} color={avatarColor} />
+      <View
+        style={[
+          styles.avatar,
+          {
+            backgroundColor: isActive ? Colors.primary + '22' : avatarColor + '18',
+            borderColor: isActive ? Colors.primary : avatarColor + '44',
+          },
+        ]}
+      >
+        <Ionicons name={genderIcon} size={24} color={isActive ? Colors.primary : avatarColor} />
       </View>
 
       {/* Info */}
       <View style={styles.info}>
-        <Text style={styles.name}>{profile.name}</Text>
-        <Text style={styles.gender}>{profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)}</Text>
+        <View style={styles.nameRow}>
+          <Text style={[styles.name, isActive && styles.nameActive]}>{profile.name}</Text>
+          {profile.is_primary && <Text style={styles.primaryTag}>Primary</Text>}
+        </View>
+        <Text style={[styles.gender, isActive && styles.genderActive]}>
+          {profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)}
+        </Text>
       </View>
 
       {/* Active badge */}
       {isActive && (
         <View style={styles.activeBadge}>
-          <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />
+          <Ionicons name="checkmark-circle" size={18} color={Colors.white} />
           <Text style={styles.activeText}>Active</Text>
         </View>
       )}
@@ -92,34 +105,53 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceElevated,
-    borderRadius: BorderRadius.lg,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
     padding: Spacing[4],
     marginBottom: Spacing[3],
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: Colors.surfaceBorder,
     gap: Spacing[3],
     ...Shadow.sm,
   },
   cardActive: {
-    borderColor: Colors.primary + '66',
-    backgroundColor: Colors.primary + '11',
+    borderColor: Colors.primary,
+    backgroundColor: '#E6F7F0',
+    ...Shadow.md,
   },
   avatar: {
-    width: 48,
-    height: 48,
+    width: 50,
+    height: 50,
     borderRadius: BorderRadius.full,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
+    borderWidth: 1.5,
   },
   info: {
     flex: 1,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing[2],
   },
   name: {
     fontFamily: FontFamily.semiBold,
     fontSize: FontSize.md,
     color: Colors.textPrimary,
+  },
+  nameActive: {
+    fontFamily: FontFamily.bold,
+    color: Colors.primaryDark,
+  },
+  primaryTag: {
+    fontFamily: FontFamily.medium,
+    fontSize: FontSize.xs,
+    color: Colors.primary,
+    backgroundColor: Colors.primary + '18',
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    borderRadius: 4,
   },
   gender: {
     fontFamily: FontFamily.regular,
@@ -127,17 +159,26 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginTop: 2,
   },
+  genderActive: {
+    color: Colors.primary,
+    fontFamily: FontFamily.medium,
+  },
   activeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: Spacing[3],
+    paddingVertical: Spacing[1],
+    borderRadius: BorderRadius.full,
   },
   activeText: {
-    fontFamily: FontFamily.medium,
-    fontSize: FontSize.sm,
-    color: Colors.primary,
+    fontFamily: FontFamily.bold,
+    fontSize: FontSize.xs,
+    color: Colors.white,
+    letterSpacing: 0.3,
   },
   deleteButton: {
-    padding: Spacing[1],
+    padding: Spacing[2],
   },
 });
