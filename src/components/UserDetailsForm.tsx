@@ -30,26 +30,48 @@ export const UserDetailsForm: React.FC<Props> = ({
 }) => {
   const [weightUnit, setWeightUnit] = useState<WeightUnit>(defaultValues?.weightUnit ?? 'kg');
   const [heightUnit, setHeightUnit] = useState<HeightUnit>(defaultValues?.heightUnit ?? 'cm');
-
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<UserDetailsFormData>({
-    resolver: zodResolver(userDetailsSchema),
-    defaultValues: {
-      weight: defaultValues?.weight,
-      height: defaultValues?.height,
-      weightUnit,
-      heightUnit,
-      gender: defaultValues?.gender ?? 'male',
-    },
-  });
+  const [weightText, setWeightText] = useState(defaultValues?.weight ? String(defaultValues.weight) : '');
+  const [heightText, setHeightText] = useState(defaultValues?.height ? String(defaultValues.height) : '');
+  const [gender, setGender] = useState<Gender>(defaultValues?.gender ?? 'male');
+  const [validationErrors, setValidationErrors] = useState<{ weight?: string; height?: string }>({});
 
   const handleWeightUnitToggle = (unit: WeightUnit) => {
     setWeightUnit(unit);
-    setValue('weightUnit', unit);
   };
 
   const handleHeightUnitToggle = (unit: HeightUnit) => {
     setHeightUnit(unit);
-    setValue('heightUnit', unit);
+  };
+
+  const handleFormSubmit = async () => {
+    const numWeight = parseFloat(weightText);
+    const numHeight = parseFloat(heightText);
+    const errors: { weight?: string; height?: string } = {};
+
+    if (!weightText || isNaN(numWeight) || numWeight <= 0) {
+      errors.weight = 'Please enter a valid positive weight';
+    }
+    if (!heightText || isNaN(numHeight) || numHeight <= 0) {
+      errors.height = 'Please enter a valid positive height';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setValidationErrors({});
+    const success = await onSubmit({
+      weight: numWeight,
+      weightUnit,
+      height: numHeight,
+      heightUnit,
+      gender,
+    });
+    if (success) {
+      setWeightText('');
+      setHeightText('');
+    }
   };
 
   return (
@@ -73,22 +95,19 @@ export const UserDetailsForm: React.FC<Props> = ({
             ))}
           </View>
         </View>
-        <Controller
-          control={control}
-          name="weight"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={[styles.input, errors.weight && styles.inputError]}
-              placeholder={`Enter weight in ${weightUnit}`}
-              placeholderTextColor={Colors.inputPlaceholder}
-              keyboardType="decimal-pad"
-              value={value ? String(value) : ''}
-              onChangeText={(t) => onChange(t ? parseFloat(t) : undefined)}
-              accessibilityLabel="Weight input"
-            />
-          )}
+        <TextInput
+          style={[styles.input, validationErrors.weight && styles.inputError]}
+          placeholder={`Enter weight in ${weightUnit}`}
+          placeholderTextColor={Colors.inputPlaceholder}
+          keyboardType="decimal-pad"
+          value={weightText}
+          onChangeText={(text) => {
+            setWeightText(text);
+            if (validationErrors.weight) setValidationErrors((prev) => ({ ...prev, weight: undefined }));
+          }}
+          accessibilityLabel="Weight input"
         />
-        {errors.weight && <Text style={styles.errorText}>{errors.weight.message}</Text>}
+        {validationErrors.weight && <Text style={styles.errorText}>{validationErrors.weight}</Text>}
       </View>
 
       {/* Height */}
@@ -110,56 +129,46 @@ export const UserDetailsForm: React.FC<Props> = ({
             ))}
           </View>
         </View>
-        <Controller
-          control={control}
-          name="height"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={[styles.input, errors.height && styles.inputError]}
-              placeholder={`Enter height in ${heightUnit}`}
-              placeholderTextColor={Colors.inputPlaceholder}
-              keyboardType="decimal-pad"
-              value={value ? String(value) : ''}
-              onChangeText={(t) => onChange(t ? parseFloat(t) : undefined)}
-              accessibilityLabel="Height input"
-            />
-          )}
+        <TextInput
+          style={[styles.input, validationErrors.height && styles.inputError]}
+          placeholder={`Enter height in ${heightUnit}`}
+          placeholderTextColor={Colors.inputPlaceholder}
+          keyboardType="decimal-pad"
+          value={heightText}
+          onChangeText={(text) => {
+            setHeightText(text);
+            if (validationErrors.height) setValidationErrors((prev) => ({ ...prev, height: undefined }));
+          }}
+          accessibilityLabel="Height input"
         />
-        {errors.height && <Text style={styles.errorText}>{errors.height.message}</Text>}
+        {validationErrors.height && <Text style={styles.errorText}>{validationErrors.height}</Text>}
       </View>
 
       {/* Gender */}
       <View style={styles.fieldGroup}>
         <Text style={styles.label}>Gender</Text>
-        <Controller
-          control={control}
-          name="gender"
-          render={({ field: { onChange, value } }) => (
-            <View style={styles.genderRow}>
-              {GENDERS.map((g) => (
-                <TouchableOpacity
-                  key={g.value}
-                  onPress={() => onChange(g.value)}
-                  style={[styles.genderBtn, value === g.value && styles.genderBtnActive]}
-                  accessibilityLabel={`Gender ${g.label}`}
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: value === g.value }}
-                >
-                  <Text style={[styles.genderBtnText, value === g.value && styles.genderBtnTextActive]}>
-                    {g.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-        />
-        {errors.gender && <Text style={styles.errorText}>{errors.gender.message}</Text>}
+        <View style={styles.genderRow}>
+          {GENDERS.map((g) => (
+            <TouchableOpacity
+              key={g.value}
+              onPress={() => setGender(g.value)}
+              style={[styles.genderBtn, gender === g.value && styles.genderBtnActive]}
+              accessibilityLabel={`Gender ${g.label}`}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: gender === g.value }}
+            >
+              <Text style={[styles.genderBtnText, gender === g.value && styles.genderBtnTextActive]}>
+                {g.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       {/* Submit */}
       <TouchableOpacity
         style={[styles.submitBtn, isSubmitting && styles.submitBtnDisabled]}
-        onPress={handleSubmit(onSubmit)}
+        onPress={handleFormSubmit}
         disabled={isSubmitting}
         accessibilityLabel="Calculate BMI"
         accessibilityRole="button"
